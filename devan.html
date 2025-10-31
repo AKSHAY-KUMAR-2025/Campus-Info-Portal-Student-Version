@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Campus Info Portal — Student Version (Beginner Friendly)</title>
+  <style>
+    /* Simple, beginner-friendly styles */
+    body{font-family:Arial,Helvetica,sans-serif;background:#f4f7fb;margin:0;color:#113;} 
+    header{background:#2456a6;color:#fff;padding:14px;text-align:center}
+    .nav{display:flex;gap:8px;justify-content:center;padding:10px;background:#fff;border-bottom:1px solid #e2e8f0}
+    .nav a{padding:8px 12px;text-decoration:none;color:#2456a6;border-radius:6px}
+    .container{max-width:960px;margin:18px auto;padding:12px}
+    .card{background:#fff;padding:12px;border-radius:8px;border:1px solid #e6eef8;margin-bottom:12px}
+    input,button,select,textarea{padding:8px;border:1px solid #cbd5e1;border-radius:6px}
+    table{width:100%;border-collapse:collapse}
+    th,td{border:1px solid #e2e8f0;padding:8px;text-align:left}
+    .small{font-size:13px;color:#334}
+    .muted{color:#6b7280}
+    .btn{background:#2456a6;color:white;border:none;padding:8px 12px;border-radius:6px;cursor:pointer}
+    .btn.secondary{background:#38bdf8;color:#043}
+    .center{text-align:center}
+    .hidden{display:none}
+    footer{font-size:13px;color:#6b7280;text-align:center;padding:12px}
+    /* beginner-friendly colors and spacing */
+  </style>
+</head>
+<body>
+<header>
+  <h1>Campus Info Portal</h1>
+  <div class="small">Simple beginner-friendly website for HackDay — Tech for Campus Life</div>
+</header>
+
+<nav class="nav">
+  <a href="#/login" id="nav-login">Login</a>
+  <a href="#/dashboard" id="nav-dashboard">Dashboard</a>
+  <a href="#/attendance" id="nav-attendance">Attendance</a>
+  <a href="#/notices" id="nav-notices">Notices</a>
+  <a href="#/admin" id="nav-admin">Admin</a>
+  <a href="#/docs" id="nav-docs">Docs / PPT / README</a>
+</nav>
+
+<div class="container">
+  <!-- Pages (simple hash routing) -->
+
+  <!-- LOGIN PAGE -->
+  <section id="page-login" class="card hidden">
+    <h2>Student Login</h2>
+    <p class="muted">(Use sample user: <b>student1</b> / <b>pass123</b>)</p>
+    <div>
+      <label>Username</label><br>
+      <input id="login-username" placeholder="Enter username"><br><br>
+      <label>Password</label><br>
+      <input id="login-password" type="password" placeholder="Enter password"><br><br>
+      <button class="btn" id="login-btn">Login</button>
+      <button class="btn secondary" id="login-guest">Continue as Guest</button>
+      <p id="login-msg" class="muted"></p>
+    </div>
+  </section>
+
+  <!-- DASHBOARD PAGE -->
+  <section id="page-dashboard" class="hidden">
+    <h2>Dashboard</h2>
+    <div class="card">
+      <h3>Welcome, <span id="user-name">Guest</span></h3>
+      <p class="small">This dashboard shows quick info — notices, bus timings, canteen menu and shortcuts.</p>
+    </div>
+
+    <div class="card">
+      <h3>📢 Latest Notices</h3>
+      <div id="notice-list"></div>
+    </div>
+
+    <div class="card">
+      <h3>🚌 Bus Timings</h3>
+      <table>
+        <tr><th>Route</th><th>Time</th></tr>
+        <tr><td>Meerut → Campus</td><td>8:00 AM</td></tr>
+        <tr><td>Muzaffarnagar →</td><td>7:30 AM</td></tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3>🍽 Today's Canteen Menu</h3>
+      <table>
+        <tr><td>Veg Thali</td><td>₹40</td></tr>
+        <tr><td>Paneer Roll</td><td>₹45</td></tr>
+        <tr><td>Tea</td><td>₹10</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <!-- ATTENDANCE PAGE -->
+  <section id="page-attendance" class="hidden">
+    <h2>Attendance (Simple Table)</h2>
+    <p class="muted">Mark present/absent for today. This is a simple client-side example for beginners — data saved in browser only.</p>
+
+    <div class="card">
+      <button class="btn" id="mark-all-present">Mark All Present</button>
+      <button class="btn secondary" id="clear-attendance">Clear</button>
+      <br><br>
+      <table>
+        <thead><tr><th>Roll</th><th>Name</th><th>Status</th></tr></thead>
+        <tbody id="attendance-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- NOTICES PAGE -->
+  <section id="page-notices" class="hidden">
+    <h2>Notices</h2>
+    <div class="card">
+      <p class="muted">Students can view notices here. Admin can add notices from Admin page.</p>
+      <div id="all-notices"></div>
+    </div>
+  </section>
+
+  <!-- ADMIN PAGE (Static Notice Upload) -->
+  <section id="page-admin" class="hidden">
+    <h2>Admin — Notice Upload (Static)</h2>
+    <p class="muted">This is a simple admin area. No real authentication to keep code beginner-friendly. Notices are saved in browser localStorage.</p>
+    <div class="card">
+      <label>Title</label><br>
+      <input id="notice-title" placeholder="e.g., HackDay Registration"><br><br>
+      <label>Message</label><br>
+      <textarea id="notice-message" rows="3" placeholder="Write notice here"></textarea><br><br>
+      <button class="btn" id="add-notice">Add Notice</button>
+      <button class="btn secondary" id="reset-notices">Reset Notices</button>
+      <p id="admin-msg" class="muted"></p>
+    </div>
+
+    <div class="card">
+      <h3>Existing Notices</h3>
+      <div id="admin-notice-list"></div>
+    </div>
+  </section>
+
+  <!-- DOCS / PPT / README / VIVA -->
+  <section id="page-docs" class="hidden">
+    <h2>Docs:</h2>
+    <div class="card">
+      <h3>1) README (GitHub)</h3>
+      <pre class="small">Project: Campus Info Portal
+
+Simple beginner-friendly single-page website (multiple sections) using HTML/CSS/JS.
+
+Features:
+- Student Login (sample)
+- Dashboard
+- Attendance (client-side)
+- Notices (admin add/save in localStorage)
+
+How to run:
+1. Save this file as index.html
+2. Open in browser (double-click)
+
+Technologies: HTML, CSS, JavaScript (no backend — localStorage used)
+
+Author: [Your Name]
+</pre>
+    </div>
+
+    <div class="card">
+      <h3>2) PPT (slide content)</h3>
+      <ol>
+        <li>Title slide — Campus Info Portal</li>
+        <li>Problem — Students need quick campus info</li>
+        <li>Solution — Simple website (features list)</li>
+        <li>Demo — Show screens: Login, Dashboard, Attendance, Admin</li>
+        <li>Tech Stack — HTML / CSS / JS</li>
+        <li>Future Work — Firebase, Login Auth, Mobile App</li>
+        <li>Thank you / Contact</li>
+      </ol>
+    </div>
+
+    <div class="card">
+      <h3>3) Short Report (one page)</h3>
+      <p class="small">The Campus Info Portal is a compact web application built for college use. It provides students with bus timings, canteen menu, library info, notices and a simple attendance interface. The application is intended as a beginner project demonstrating client-side data storage (localStorage) and simple UI routing using JavaScript. Future improvements include server-side storage, authentication, and mobile responsiveness.</p>
+    </div>
+
+  </section>
+
+</div>
+
+<footer>
+  © 2025 Campus Info Portal — Beginner Project. Built for HackDay.
+</footer>
+
+<script>
+  // Beginner-friendly JS: simple routing + data saved in localStorage
+
+  // --- Sample users and sample students (beginner data) ---
+  const sampleUsers = [{username:'student1',password:'pass123',name:'Akshay Kumar'}];
+  const sampleStudents = [
+    {roll:'1',name:'Akshay Kumar'},
+    {roll:'2',name:'Prachi'},
+    {roll:'3',name:'Samad Mehdi'},
+    {roll:'4',name:'Manjeet Kumar'}
+  ];
+
+  // --- Utilities ---
+  function $(id){return document.getElementById(id)}
+  function showPage(id){
+    const pages = ['page-login','page-dashboard','page-attendance','page-notices','page-admin','page-docs'];
+    pages.forEach(p=> $(p).classList.add('hidden'));
+    $(id).classList.remove('hidden');
+  }
+
+  // --- Notices: load/save to localStorage ---
+  function loadNotices(){
+    const raw = localStorage.getItem('campus_notices');
+    return raw? JSON.parse(raw) : [
+      {title:'HackDay Registration',msg:'Register before 30 Oct'},
+      {title:'Library',msg:'Closed on 2 Nov'}
+    ];
+  }
+  function saveNotices(list){ localStorage.setItem('campus_notices', JSON.stringify(list)); }
+
+  function renderNotices(){
+    const list = loadNotices();
+    const container = $('all-notices');
+    const adminList = $('admin-notice-list');
+    const dashboard = $('notice-list');
+    container.innerHTML=''; adminList.innerHTML=''; dashboard.innerHTML='';
+    list.forEach((n,i)=>{
+      const el = document.createElement('div'); el.className='muted small'; el.style.marginBottom='8px';
+      el.innerHTML = `<b>${n.title}</b><br>${n.msg}`;
+      container.appendChild(el);
+
+      const el2 = el.cloneNode(true);
+      dashboard.appendChild(el2);
+
+      const adminEl = document.createElement('div'); adminEl.className='small';
+      adminEl.style.borderTop='1px solid #eef'; adminEl.style.paddingTop='6px';
+      adminEl.innerHTML = `<b>${n.title}</b> — ${n.msg} <button class='btn secondary' onclick='deleteNotice(${i})' style='margin-left:8px'>Delete</button>`;
+      adminList.appendChild(adminEl);
+    });
+  }
+
+  function addNotice(){
+    const title = $('notice-title').value.trim();
+    const msg = $('notice-message').value.trim();
+    if(!title || !msg){ $('admin-msg').innerText = 'Please add both title and message'; return; }
+    const list = loadNotices();
+    list.unshift({title,msg});
+    saveNotices(list); renderNotices();
+    $('admin-msg').innerText = 'Notice added.'; $('notice-title').value=''; $('notice-message').value='';
+  }
+  function deleteNotice(index){
+    const list = loadNotices(); list.splice(index,1); saveNotices(list); renderNotices();
+  }
+  function resetNotices(){ localStorage.removeItem('campus_notices'); renderNotices(); $('admin-msg').innerText='Notices reset to default.' }
+
+  // --- Attendance: simple client-side table ---
+  function loadAttendance(){
+    const raw = localStorage.getItem('campus_attendance');
+    return raw? JSON.parse(raw) : sampleStudents.map(s=>({roll:s.roll,name:s.name,status:'Absent'}));
+  }
+  function saveAttendance(data){ localStorage.setItem('campus_attendance', JSON.stringify(data)); }
+  function renderAttendance(){
+    const tbody = $('attendance-body'); tbody.innerHTML='';
+    const list = loadAttendance();
+    list.forEach((s,i)=>{
+      const tr = document.createElement('tr');
+      tr.innerHTML = `<td>${s.roll}</td><td>${s.name}</td><td><select onchange='setStatus(${i},this.value)'><option ${s.status==='Present'? 'selected':''}>Present</option><option ${s.status==='Absent'? 'selected':''}>Absent</option></select></td>`;
+      tbody.appendChild(tr);
+    });
+  }
+  function setStatus(i,val){ const data = loadAttendance(); data[i].status = val; saveAttendance(data); }
+  function markAllPresent(){ const data = loadAttendance().map(s=>({...s,status:'Present'})); saveAttendance(data); renderAttendance(); }
+  function clearAttendance(){ localStorage.removeItem('campus_attendance'); renderAttendance(); }
+
+  // --- Login (very simple) ---
+  function tryLogin(){
+    const user = $('login-username').value.trim(); const pass = $('login-password').value;
+    const found = sampleUsers.find(u=> u.username===user && u.password===pass);
+    if(found){
+      $('login-msg').innerText = 'Login successful';
+      localStorage.setItem('campus_user', JSON.stringify(found));
+      setTimeout(()=>{ navigateTo('#/dashboard') },300);
+    } else { $('login-msg').innerText = 'Invalid credentials (try student1 / pass123)'; }
+  }
+  function guestLogin(){ localStorage.removeItem('campus_user'); navigateTo('#/dashboard'); }
+
+  function getCurrentUser(){ const raw = localStorage.getItem('campus_user'); return raw? JSON.parse(raw): {name:'Guest'} }
+
+  // --- Navigation and routing ---
+  function navigateTo(hash){ location.hash = hash; }
+  function onRouteChange(){
+    const h = location.hash || '#/login';
+    // show correct page
+    if(h.startsWith('#/login')){ showPage('page-login'); }
+    else if(h.startsWith('#/dashboard')){ showPage('page-dashboard'); }
+    else if(h.startsWith('#/attendance')){ showPage('page-attendance'); }
+    else if(h.startsWith('#/notices')){ showPage('page-notices'); }
+    else if(h.startsWith('#/admin')){ showPage('page-admin'); }
+    else if(h.startsWith('#/docs')){ showPage('page-docs'); }
+    else { showPage('page-login'); }
+
+    // update user name
+    const user = getCurrentUser(); $('user-name').innerText = user.name || 'Guest';
+    renderNotices(); renderAttendance();
+  }
+
+  // --- Event bindings ---
+  window.addEventListener('hashchange', onRouteChange);
+  window.addEventListener('load', ()=>{
+    // Attach button handlers
+    $('login-btn').onclick = tryLogin;
+    $('login-guest').onclick = guestLogin;
+    $('add-notice').onclick = addNotice;
+    $('reset-notices').onclick = resetNotices;
+    $('mark-all-present').onclick = markAllPresent;
+    $('clear-attendance').onclick = clearAttendance;
+
+    // initial render
+    onRouteChange();
+  });
+
+  // Expose deleteNotice to inline onclick used in admin list
+  window.deleteNotice = deleteNotice;
+  window.setStatus = setStatus;
+
+</script>
+</body>
+</html>
